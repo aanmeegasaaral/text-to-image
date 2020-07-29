@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'APP' ) ) {
+	die;
+}
 $current = time();
 $folder  = 'img/' . $current;
 mkdir( __DIR__ . '/' . $folder, 777, true );

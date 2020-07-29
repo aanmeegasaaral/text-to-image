@@ -1,5 +1,6 @@
 <?php
-
+define( 'APP', true );
+set_time_limit( 0 );
 if ( isset( $_REQUEST['download'] ) ) {
 	$file = __DIR__ . './' . urldecode( $_REQUEST['download'] );
 	header( 'Content-type: octet/stream' );

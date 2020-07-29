@@ -1,3 +1,7 @@
+<?php
+if ( ! defined( 'APP' ) ) {
+	die;
+} ?>
 <style>
 	body {
 		background: #fff;
