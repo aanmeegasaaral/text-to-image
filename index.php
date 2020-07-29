@@ -23,7 +23,7 @@ if ( isset( $_REQUEST['content'] ) && isset( $_REQUEST['generate'] ) ) {
 ?>
 
 <div class="container mt-5">
-	<form method="post">
+	<form method="post" enctype="multipart/form-data" >
 		<table class="table table-hover table-bordered">
 			<tr>
 				<td><textarea name="content" class="form-control" style="width:100%; min-height: 300px;"></textarea>

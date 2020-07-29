@@ -4,7 +4,7 @@ if ( ! defined( 'APP' ) ) {
 }
 $current = time();
 $folder  = 'img/' . $current;
-mkdir( __DIR__ . '/' . $folder, 777, true );
+mkdir( __DIR__ . '/' . $folder, 0777, true );
 error_reporting( 0 );
 date_default_timezone_set( 'Asia/Kolkata' );
 global $content;
@@ -12,7 +12,6 @@ global $content;
 $final_content = array();
 $content       = explode( PHP_EOL, $content );
 $i             = 0;
-
 foreach ( $content as $c ) {
 	if ( ! empty( $c ) ) {
 		$final_content[ $i ] = ( ! isset( $final_content[ $i ] ) ) ? '' : $final_content[ $i ];
@@ -25,7 +24,6 @@ foreach ( $content as $c ) {
 	}
 }
 
-
 require_once __DIR__ . '/vendor/autoload.php';
 
 use JonnyW\PhantomJs\Client;
@@ -35,8 +33,14 @@ $width  = 3840;
 $height = 2160;
 $top    = 0;
 $left   = 0;
-$client->getEngine()->setPath( __DIR__ . '/vendor/bin/phantomjs.exe' );
-$request = $client->getMessageFactory()->createCaptureRequest( 'https://aanmeegasaaral.pc/html.php', 'GET' );
+if ( file_exists( __DIR__ . '/vendor/bin/phantomjs.exe' ) ) {
+	$client->getEngine()->setPath( __DIR__ . '/vendor/bin/phantomjs.exe' );
+} else {
+	$client->getEngine()->setPath( __DIR__ . '/vendor/bin/phantomjs' );
+}
+
+$request = $client->getMessageFactory()
+	->createCaptureRequest( 'https://' . $_SERVER['SERVER_NAME'] . '/html.php', 'POST' );
 
 $i = 1;
 foreach ( $final_content as $id => $con ) {
