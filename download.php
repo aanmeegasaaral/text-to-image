@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'APP' ) ) {
+if ( ! defined( 'SITE_URL' ) ) {
 	die;
 }
 $current = time();
@@ -33,19 +33,13 @@ $width  = 3840;
 $height = 2160;
 $top    = 0;
 $left   = 0;
-if ( file_exists( __DIR__ . '/vendor/bin/phantomjs.exe' ) ) {
-	$client->getEngine()->setPath( __DIR__ . '/vendor/bin/phantomjs.exe' );
-} else {
-	$client->getEngine()->setPath( __DIR__ . '/vendor/bin/phantomjs' );
-}
-
-$request = $client->getMessageFactory()
-	->createCaptureRequest( 'https://' . $_SERVER['SERVER_NAME'] . '/html.php', 'POST' );
+$client->getEngine()->setPath( __DIR__ . '/vendor/bin/phantomjs.exe' );
+$request = $client->getMessageFactory()->createCaptureRequest( SITE_URL . 'html.php', 'POST' );
 
 $i = 1;
 foreach ( $final_content as $id => $con ) {
 	$request->setRequestData( array( 'text' => urlencode( $con ) ) ); // Set post data
-	$request->setOutputFile( './' . $folder . '/' . $i . '.png' );
+	$request->setOutputFile( './' . $folder . '/' . $i . '.jpg' );
 	$request->setViewportSize( $width, $height );
 	$request->setCaptureDimensions( $width, $height, $top, $left );
 	$response = $client->getMessageFactory()->createResponse();
@@ -57,7 +51,7 @@ $files  = glob( './' . $folder . '/*', GLOB_NOSORT );
 $output = array();
 foreach ( $files as $file ) {
 	$id                      = basename( $file );
-	$output[ intval( $id ) ] = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/index.php?download=' . urlencode( $folder . '/' . $id );
+	$output[ intval( $id ) ] = SITE_URL . '?download=' . base64_encode( urlencode( $folder . '/' . $id ) );
 }
 ksort( $output );
 echo '<br/><br/><div class="container">';

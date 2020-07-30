@@ -1,8 +1,8 @@
 <?php
-define( 'APP', true );
+define( 'SITE_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/t2i/' );
 set_time_limit( 0 );
 if ( isset( $_REQUEST['download'] ) ) {
-	$file = __DIR__ . './' . urldecode( $_REQUEST['download'] );
+	$file = __DIR__ . './' . urldecode( base64_decode( $_REQUEST['download'] ) );
 	header( 'Content-type: octet/stream' );
 	header( 'Content-disposition: attachment; filename=' . basename( $file ) . ';' );
 	header( 'Content-Length: ' . filesize( $file ) );
@@ -23,7 +23,7 @@ if ( isset( $_REQUEST['content'] ) && isset( $_REQUEST['generate'] ) ) {
 ?>
 
 <div class="container mt-5">
-	<form method="post" enctype="multipart/form-data" >
+	<form method="post" enctype="multipart/form-data">
 		<table class="table table-hover table-bordered">
 			<tr>
 				<td><textarea name="content" class="form-control" style="width:100%; min-height: 300px;"></textarea>
