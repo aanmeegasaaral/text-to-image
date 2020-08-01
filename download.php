@@ -2,8 +2,10 @@
 if ( ! defined( 'SITE_URL' ) ) {
 	die;
 }
+
 $current = time();
 $folder  = 'img/' . $current;
+
 mkdir( __DIR__ . '/' . $folder, 0777, true );
 error_reporting( 0 );
 date_default_timezone_set( 'Asia/Kolkata' );
@@ -34,7 +36,7 @@ $height = 2160;
 $top    = 0;
 $left   = 0;
 $client->getEngine()->setPath( __DIR__ . '/vendor/bin/phantomjs.exe' );
-$request = $client->getMessageFactory()->createCaptureRequest( SITE_URL . 'html.php', 'POST' );
+$request = $client->getMessageFactory()->createCaptureRequest( SITE_URL . $_REQUEST['template'], 'POST' );
 
 $i = 1;
 foreach ( $final_content as $id => $con ) {

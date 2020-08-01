@@ -1,6 +1,7 @@
 <?php
-define( 'SITE_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/t2i/' );
-set_time_limit( 0 );
+global $templates;
+require_once __DIR__ . '/config.php';
+
 if ( isset( $_REQUEST['download'] ) ) {
 	$file = __DIR__ . './' . urldecode( base64_decode( $_REQUEST['download'] ) );
 	header( 'Content-type: octet/stream' );
@@ -10,7 +11,6 @@ if ( isset( $_REQUEST['download'] ) ) {
 	exit;
 }
 ?>
-
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
 	  integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
@@ -22,11 +22,25 @@ if ( isset( $_REQUEST['content'] ) && isset( $_REQUEST['generate'] ) ) {
 }
 ?>
 
+
 <div class="container mt-5">
 	<form method="post" enctype="multipart/form-data">
 		<table class="table table-hover table-bordered">
 			<tr>
 				<td><textarea name="content" class="form-control" style="width:100%; min-height: 300px;"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?php
+					foreach ( $templates as $file => $template ) {
+						$id = md5( $file );
+						echo <<<HTML
+<div class="custom-control custom-radio custom-control-inline"><input name="template" type="radio" class="custom-control-input" id="${id}" value="${file}"><label
+			class="custom-control-label" for="${id}">${template}</label></div>
+HTML;
+					}
+					?>
 				</td>
 			</tr>
 			<tr>
